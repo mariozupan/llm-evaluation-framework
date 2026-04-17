@@ -73,13 +73,34 @@ The evaluation task:
 
 ## Key Results
 
+### Bookkeeping Domain Performance
+
 | Model | Method | Accounts Score | Balanced |
 |-------|--------|--------------|----------|
 | Seed-OSS-36B | QLoRA | 0.731 | 0.990 |
 | GPT-OSS-20B | FFT | 0.736 | 0.955 |
 | GLM-4-5-Air | QLoRA | 0.406 | 0.832 |
 
-See the paper for full evaluation methodology and results.
+### General Knowledge Preservation
+
+| Benchmark | Base | Seed-OSS QLoRA | GPT-OSS FFT | GLM-4-5-Air QLoRA |
+|-----------|------|---------------|-----------|------------------|
+| HellaSwag | 0.683 | **0.740** | 0.453 | 0.708 |
+| MMLU | 0.230 | **0.514** | 0.229 | 0.331 |
+| TruthfulQA | 0.356 | 0.357 | **0.370** | 0.354 |
+| GSM8K | 0.115 | 0.289 | 0.455 | **0.396** |
+
+## Key Findings
+
+1. **QLoRA preserves general knowledge**: Seed-OSS-36B QLoRA showed +123% improvement on MMLU (0.230→0.514) - counter-intuitive result showing structured accounting data provides beneficial training signal.
+
+2. **FFT causes catastrophic forgetting**: GPT-OSS-20B FFT showed severe degradation on HellaSwag (-34%), WinoGrande (-25%), IFEval (-46%), despite strong domain performance.
+
+3. **Gradient stability**: FFT has much higher gradient variance (mean 1.159, max 25.6) vs QLoRA (<0.15), affecting training stability.
+
+4. **Memory efficiency**: QLoRA uses 49% less memory (35.2 GiB vs 80.1 GiB), enabling 36B models on 4×96GB GPUs.
+
+5. **MoE challenges**: GLM-4-5-Air maintained general knowledge but struggled with structured generation, suggesting expert routing hinders low-rank adapter propagation.
 
 ## Requirements
 
@@ -91,7 +112,7 @@ See the paper for full evaluation methodology and results.
 
 ## License
 
-Apache 2.0
+MIT
 
 ## Citation
 
