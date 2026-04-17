@@ -1,0 +1,91 @@
+
+
+
+base_model: ByteDance-Seed/Seed-OSS-36B-Instruct
+#use_kernels: false
+#model_quantization_config: Mxfp4Config
+#model_quantization_config_kwargs:
+#  dequantize: true
+
+#plugins:
+#  - axolotl.integrations.cut_cross_entropy.CutCrossEntropyPlugin
+
+load_in_8bit: false
+load_in_4bit: true
+
+adapter: qlora
+lora_model_dir:
+
+lora_r: 32
+lora_alpha: 64 #16
+lora_dropout: 0.05
+lora_target_linear: true
+
+datasets:
+  - path: /lustre/home/mzupan/axolotl/data/deepseek_r1_optimized-improved.jsonl #this is my local dataset; in that case, you need to change field_messages: messages
+    type: chat_template
+    chat_template: tokenizer_default
+    field_messages: messages #conversations
+    message_property_mappings:
+       role: role ###type #role is for tabular dataset and 'type' is set in accounting_data.jsonl
+       content: content
+    roles_to_train: ["assistant"]
+    train_on_eos: last  #turn
+  #this is the second dataset with journal accounts' codes
+  - path: mariozupan/rrif
+    split: train
+    type: chat_template
+    chat_template: tokenizer_default
+    field_messages: conversations
+    message_property_mappings:
+      role: role
+      content: content
+    roles_to_train: ["assistant"]
+    train_on_eos: last #turn
+  #this is the third dataset with journal codenames, but different kind of quest on the same subject, masked description
+  - path: mariozupan/bookkeeping-posting-schemes-2007-2023
+    split: train
+    type: chat_template
+    chat_template: tokenizer_default
+    field_messages: conversations
+    message_property_mappings:
+      role: role
+      content: content
+    roles_to_train: ["assistant"]
+    train_on_eos: last #turn
+
+
+
+dataset_prepared_path: ./outputs/last_run_prepared
+val_set_size: 0.1
+output_dir: ./outputs-wiley/seed-oss-36b-qlora-default-config/
+
+sequence_len: 2048 #512 #4096
+sample_packing: false #true
+
+wandb_project: axlotl
+wandb_entity: mariozupansystems-srce
+wandb_watch:
+wandb_name:
+wandb_log_model:
+
+gradient_accumulation_steps: 4
+micro_batch_size: 2
+num_epochs: 2 #1
+optimizer: adamw_bnb_8bit
+lr_scheduler: cosine
+learning_rate: 5e-5 #0.0002
+
+bf16: auto
+tf32: false
+
+gradient_checkpointing: true
+resume_from_checkpoint:
+logging_steps: 1
+flash_attention: true
+
+warmup_ratio: 0.1
+evals_per_epoch: 1
+saves_per_epoch: 1
+
+
