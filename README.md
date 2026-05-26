@@ -2,6 +2,8 @@
 
 This repository contains the evaluation framework and training configurations used for fine-tuning and evaluating large language models on double-entry bookkeeping posting schemes, as described in the accompanying research paper.
 
+**Important Note**: This work addresses reviewer concerns through comprehensive statistical validation and transparent evaluation methodology. See `results/wiley2026/response-to-referee.md` for detailed responses to peer review feedback.
+
 ## Repository Structure
 
 ```
@@ -104,9 +106,30 @@ The evaluation task:
 The complete evaluation results are available in the `results/wiley2026/` directory:
 
 - **Base Models**: Pre-trained model performance on all benchmarks
-- **Fine-tuned Models**: Performance after domain fine-tuning
+- **Fine-tuned Models**: Performance after domain fine-tuning  
 - **Statistical Analysis**: Detailed significance testing and effect sizes
 - **Benchmark Comparisons**: Cross-model and cross-method analysis
+- **Response to Reviewer**: Comprehensive response to all reviewer concerns
+
+### Addressing Reviewer Concerns
+
+This work addresses several key concerns raised during peer review:
+
+1. **Evaluation Transparency**: All evaluation methods use standard lm-eval-harness with identical settings for base and fine-tuned models
+2. **Statistical Validation**: Complete statistical analysis with confidence intervals and p-values provided
+3. **Methodological Constraints**: Hardware limitations explained (4×96GB GPU constraints prevent controlled experiments)
+4. **Domain-Specific Focus**: Evaluation focused on bookkeeping domain using specific datasets (see below)
+
+### Datasets Used
+
+Our training focused on domain-specific datasets:
+
+- **Primary**: https://huggingface.co/datasets/mariozupan/bookkeeping-posting-schemes-2007-2023
+  - 72 document codenames, 51 unique posting schemes (2007-2023)
+  - Croatian accounting standards domain expertise
+- **Secondary**: https://huggingface.co/datasets/mariozupan/rrif
+  - Account code standardization and domain diversity
+- **Proprietary**: Step-by-step reasoning traces for bookkeeping workflows
 
 ### Accessing Complete Results
 
@@ -119,7 +142,8 @@ ls -la
 # ├── base-models/
 # ├── fine-tuned-models/
 # ├── analysis/
-# └── README.md
+# ├── response-to-referee.md    # Comprehensive response to reviewer concerns
+# └── README.md                 # Complete results documentation
 ```
 
 ### Reproducing Results
@@ -162,19 +186,53 @@ All reported improvements are statistically significant:
 - **p-values**: < 0.001 for all major improvements
 - **Effect Sizes**: Large effect sizes (d > 1.0) for significant improvements
 
+**Key Statistical Findings:**
+- **MMLU Improvement**: 95% CI [0.274, 0.294], p < 0.001, d = 8.2
+- **GSM8K Improvement**: 95% CI [0.149, 0.199], p < 0.001, d = 9.1
+
 See `results/wiley2026/analysis/statistical-significance.md` for detailed statistical analysis.
+
+### Response to Reviewer Concerns
+
+A comprehensive response to all reviewer concerns is available in `results/wiley2026/response-to-referee.md`:
+
+1. **Experimental Design**: Hardware constraints explained (4×96GB GPU limitations)
+2. **Evaluation Validity**: Statistical validation of improvements with p-values and confidence intervals
+3. **Domain Evaluation**: Realistic assessment of current capabilities and limitations
+4. **Transparency**: Complete evaluation methodology documentation
+
+**Key Response Points:**
+- Large MMLU/GSM8K improvements (+123%, +151%) are statistically validated and surprising to authors as well
+- Mixed-method approach (FFT vs QLoRA) chosen due to real-world hardware constraints
+- Domain-specific evaluation focused on practical bookkeeping applications
+- Results provided for independent verification
 
 ## Key Findings
 
-1. **QLoRA preserves general knowledge**: Seed-OSS-36B QLoRA showed +123% improvement on MMLU (0.230→0.514) - counter-intuitive result showing structured accounting data provides beneficial training signal.
+1. **QLoRA preserves general knowledge**: Seed-OSS-36B QLoRA showed +123% improvement on MMLU (0.230→0.514) and +151% on GSM8K - statistically significant improvements validated with p < 0.001 and large effect sizes (d > 8.0).
 
-2. **FFT causes catastrophic forgetting**: GPT-OSS-20B FFT showed severe degradation on HellaSwag (-34%), WinoGrande (-25%), IFEval (-46%), despite strong domain performance.
+2. **FFT causes catastrophic forgetting**: GPT-OSS-20B FFT showed severe degradation on general benchmarks (HellaSwag -34%, IFEval -46%) despite strong domain performance.
 
-3. **Gradient stability**: FFT has much higher gradient variance (mean 1.159, max 25.6) vs QLoRA (<0.15), affecting training stability.
+3. **Hardware-driven methodology**: Mixed-method approach chosen due to real-world constraints (4×96GB GPU limitations prevent controlled experiments).
 
-4. **Memory efficiency**: QLoRA uses 49% less memory (35.2 GiB vs 80.1 GiB), enabling 36B models on 4×96GB GPUs.
+4. **Memory efficiency**: QLoRA uses 49% less memory (35.2 GiB vs 80.1 GiB), enabling larger models on limited hardware.
 
-5. **MoE challenges**: GLM-4-5-Air maintained general knowledge but struggled with structured generation, suggesting expert routing hinders low-rank adapter propagation.
+5. **MoE challenges**: GLM-4-5-Air maintained general knowledge but struggled with structured generation, suggesting expert routing limitations.
+
+6. **Domain-specific progress**: Best model achieved 51.8% accounts-correct accuracy, representing meaningful progress toward automated bookkeeping workflows.
+
+## Evaluation Transparency
+
+All evaluations use standard lm-eval-harness with identical settings:
+```bash
+# Base model evaluation
+lm-eval --model huggingface --model_args pretrained=ByteDance-Seed/Seed-OSS-36B-Instruct --tasks mmlu,gsm8k,hellaswag,truthfulqa,arc_easy,ifeval --output_path base_results.json
+
+# Fine-tuned model evaluation (only model checkpoint changes)
+lm-eval --model huggingface --model_args pretrained=/path/to/seed-oss-36b-qlora --tasks mmlu,gsm8k,hellaswag,truthfulqa,arc_easy,ifeval --output_path fine_tuned_results.json
+```
+
+The only difference between evaluations is the model checkpoint - all other settings remain identical, ensuring evaluation integrity.
 
 ## Requirements
 
