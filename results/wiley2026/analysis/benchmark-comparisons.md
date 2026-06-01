@@ -11,7 +11,7 @@ This document provides detailed comparative analysis across different models and
 | Model | Method | MMLU | GSM8K | HellaSwag | Accounts Correct | Balanced |
 |-------|--------|------|-------|-----------|-----------------|----------|
 | **Seed-OSS-36B** | Base | 0.230 | 0.115 | 0.683 | N/A | N/A |
-| **Seed-OSS-36B** | QLoRA | **0.514** | **0.289** | **0.740** | 0.424 | 0.990 |
+| **Seed-OSS-36B** | QLoRA | **0.514** | 0.289 | **0.740** | 0.424 | 0.990 |
 | **GPT-OSS-20B** | Base | 0.272 | 0.650 | 0.330 | N/A | N/A |
 | **GPT-OSS-20B** | FFT | 0.229 | 0.453 | 0.453 | **0.518** | 0.955 |
 | **GLM-4-5-Air** | Base | 0.583 | 0.261 | 0.676 | N/A | N/A |
