@@ -2,7 +2,6 @@
 
 This repository contains the evaluation framework and training configurations used for fine-tuning and evaluating large language models on double-entry bookkeeping posting schemes, as described in the accompanying research paper.
 
-**Important Note**: This work addresses reviewer concerns through comprehensive statistical validation and transparent evaluation methodology. See `results/wiley2026/response-to-referee.md` for detailed responses to peer review feedback.
 
 ## Repository Structure
 
