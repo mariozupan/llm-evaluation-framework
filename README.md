@@ -99,17 +99,9 @@ The evaluation task:
 | TruthfulQA | 0.356 | 0.357 | **0.370** | 0.354 |
 | GSM8K | 0.115 | 0.289 | 0.455 | **0.396** |
 
+
 ## Complete Results & Reproducibility
 
-### Full Evaluation Results
-
-The complete evaluation results are available in the `results/wiley2026/` directory:
-
-- **Base Models**: Pre-trained model performance on all benchmarks
-- **Fine-tuned Models**: Performance after domain fine-tuning  
-- **Statistical Analysis**: Detailed significance testing and effect sizes
-- **Benchmark Comparisons**: Cross-model and cross-method analysis
-- **Response to Reviewer**: Comprehensive response to all reviewer concerns
 
 ### Datasets Used
 
@@ -133,8 +125,7 @@ ls -la
 # ├── base-models/
 # ├── fine-tuned-models/
 # ├── analysis/
-# ├── response-to-referee.md    # Comprehensive response to reviewer concerns
-# └── README.md                 # Complete results documentation
+# └── README.md                 
 ```
 
 ### Reproducing Results
@@ -172,30 +163,15 @@ ls -la
 
 ### Statistical Validation
 
-All reported improvements are statistically significant:
-- **95% Confidence Intervals**: Non-overlapping intervals for major improvements
-- **p-values**: < 0.001 for all major improvements
-- **Effect Sizes**: Large effect sizes (d > 1.0) for significant improvements
-
-**Key Statistical Findings:**
-- **MMLU Improvement**: 95% CI [0.274, 0.294], p < 0.001, d = 8.2
-- **GSM8K Improvement**: 95% CI [0.149, 0.199], p < 0.001, d = 9.1
 
 ## Evaluation Transparency
 
-All evaluations use standard lm-eval-harness with identical settings:
-```bash
-# Base model evaluation
-lm-eval --model huggingface --model_args pretrained=ByteDance-Seed/Seed-OSS-36B-Instruct --tasks mmlu,gsm8k,hellaswag,truthfulqa,arc_easy,ifeval --output_path base_results.json
-
-# Fine-tuned model evaluation (only model checkpoint changes)
-lm-eval --model huggingface --model_args pretrained=/path/to/seed-oss-36b-qlora --tasks mmlu,gsm8k,hellaswag,truthfulqa,arc_easy,ifeval --output_path fine_tuned_results.json
-```
+All evaluations use standard lm-eval-harness with identical settings
 
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.11+
 - CUDA-capable GPU (4×96GB recommended)
 - Axolotl
 - lm-eval-harness
