@@ -111,18 +111,9 @@ The complete evaluation results are available in the `results/wiley2026/` direct
 - **Benchmark Comparisons**: Cross-model and cross-method analysis
 - **Response to Reviewer**: Comprehensive response to all reviewer concerns
 
-### Addressing Reviewer Concerns
-
-This work addresses several key concerns raised during peer review:
-
-1. **Evaluation Transparency**: All evaluation methods use standard lm-eval-harness with identical settings for base and fine-tuned models
-2. **Statistical Validation**: Complete statistical analysis with confidence intervals and p-values provided
-3. **Methodological Constraints**: Hardware limitations explained (4×96GB GPU constraints prevent controlled experiments)
-4. **Domain-Specific Focus**: Evaluation focused on bookkeeping domain using specific datasets (see below)
-
 ### Datasets Used
 
-Our training focused on domain-specific datasets:
+The training focused on domain-specific datasets:
 
 - **Primary**: https://huggingface.co/datasets/mariozupan/bookkeeping-posting-schemes-2007-2023
   - 72 document codenames, 51 unique posting schemes (2007-2023)
@@ -190,37 +181,6 @@ All reported improvements are statistically significant:
 - **MMLU Improvement**: 95% CI [0.274, 0.294], p < 0.001, d = 8.2
 - **GSM8K Improvement**: 95% CI [0.149, 0.199], p < 0.001, d = 9.1
 
-See `results/wiley2026/analysis/statistical-significance.md` for detailed statistical analysis.
-
-### Response to Reviewer Concerns
-
-A comprehensive response to all reviewer concerns is available in `results/wiley2026/response-to-referee.md`:
-
-1. **Experimental Design**: Hardware constraints explained (4×96GB GPU limitations)
-2. **Evaluation Validity**: Statistical validation of improvements with p-values and confidence intervals
-3. **Domain Evaluation**: Realistic assessment of current capabilities and limitations
-4. **Transparency**: Complete evaluation methodology documentation
-
-**Key Response Points:**
-- Large MMLU/GSM8K improvements (+123%, +151%) are statistically validated and surprising to authors as well
-- Mixed-method approach (FFT vs QLoRA) chosen due to real-world hardware constraints
-- Domain-specific evaluation focused on practical bookkeeping applications
-- Results provided for independent verification
-
-## Key Findings
-
-1. **QLoRA preserves general knowledge**: Seed-OSS-36B QLoRA showed +123% improvement on MMLU (0.230→0.514) and +151% on GSM8K - statistically significant improvements validated with p < 0.001 and large effect sizes (d > 8.0).
-
-2. **FFT causes catastrophic forgetting**: GPT-OSS-20B FFT showed severe degradation on general benchmarks (HellaSwag -34%, IFEval -46%) despite strong domain performance.
-
-3. **Hardware-driven methodology**: Mixed-method approach chosen due to real-world constraints (4×96GB GPU limitations prevent controlled experiments).
-
-4. **Memory efficiency**: QLoRA uses 49% less memory (35.2 GiB vs 80.1 GiB), enabling larger models on limited hardware.
-
-5. **MoE challenges**: GLM-4-5-Air maintained general knowledge but struggled with structured generation, suggesting expert routing limitations.
-
-6. **Domain-specific progress**: Best model achieved 51.8% accounts-correct accuracy, representing meaningful progress toward automated bookkeeping workflows.
-
 ## Evaluation Transparency
 
 All evaluations use standard lm-eval-harness with identical settings:
@@ -232,7 +192,6 @@ lm-eval --model huggingface --model_args pretrained=ByteDance-Seed/Seed-OSS-36B-
 lm-eval --model huggingface --model_args pretrained=/path/to/seed-oss-36b-qlora --tasks mmlu,gsm8k,hellaswag,truthfulqa,arc_easy,ifeval --output_path fine_tuned_results.json
 ```
 
-The only difference between evaluations is the model checkpoint - all other settings remain identical, ensuring evaluation integrity.
 
 ## Requirements
 
