@@ -11,16 +11,13 @@ model_quantization_config_kwargs:
 experimental_skip_move_to_device: true  # prevent OOM by NOT putting model to GPU before sharding
 
 datasets:
-  #- path: HuggingFaceH4/Multilingual-Thinking
-  # type: chat_template
-  # field_thinking: thinking
-  # template_thinking_key: thinking
-  - path: /lustre/home/mzupan/axolotl/data/deepseek_r1_optimized-improved.jsonl #this is my local dataset; in that case, you need to change field_messages: messages
+  # local dataset
+  - path: /lustre/home/mzupan/axolotl/data/deepseek_r1_optimized-improved.jsonl 
     type: chat_template
     chat_template: tokenizer_default
-    field_messages: messages #conversations
+    field_messages: messages 
     message_property_mappings:
-       role: role ###type #role is for tabular dataset and 'type' is set in accounting_data.jsonl
+       role: role 
        content: content
     roles_to_train: ["assistant"]
     train_on_eos: turn
@@ -35,7 +32,7 @@ datasets:
       content: content
     roles_to_train: ["assistant"]
     train_on_eos: turn
-  #this is the third dataset with journal codenames, but different kind of quest on the same subject, masked description
+  #this is the third dataset
   - path: mariozupan/bookkeeping-posting-schemes-2007-2023
     split: train
     type: chat_template
@@ -56,8 +53,8 @@ output_dir: ./outputs-wiley/gpt-oss-20b-fft-2epoch/
 sequence_len: 4096
 sample_packing: true
 
-wandb_project: axlotl
-wandb_entity: mariozupansystems-srce
+wandb_project: 
+wandb_entity: 
 wandb_watch:
 wandb_name:
 wandb_log_model:
@@ -68,7 +65,7 @@ num_epochs: 2
 
 optimizer: adamw_torch_8bit
 lr_scheduler: cosine #constant_with_warmup
-learning_rate: 1e-5
+learning_rate: 3e-6 #1e-5
 
 bf16: true
 tf32: true

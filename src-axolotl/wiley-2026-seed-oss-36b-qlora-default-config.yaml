@@ -22,15 +22,16 @@ lora_dropout: 0.05
 lora_target_linear: true
 
 datasets:
-  - path: /lustre/home/mzupan/axolotl/data/deepseek_r1_optimized-improved.jsonl #this is my local dataset; in that case, you need to change field_messages: messages
+  #local dataset
+  - path: /lustre/home/mzupan/axolotl/data/deepseek_r1_optimized-improved.jsonl 
     type: chat_template
     chat_template: tokenizer_default
-    field_messages: messages #conversations
+    field_messages: messages 
     message_property_mappings:
-       role: role ###type #role is for tabular dataset and 'type' is set in accounting_data.jsonl
+       role: role 
        content: content
     roles_to_train: ["assistant"]
-    train_on_eos: last  #turn
+    train_on_eos: last  
   #this is the second dataset with journal accounts' codes
   - path: mariozupan/rrif
     split: train
@@ -42,7 +43,7 @@ datasets:
       content: content
     roles_to_train: ["assistant"]
     train_on_eos: last #turn
-  #this is the third dataset with journal codenames, but different kind of quest on the same subject, masked description
+  #this is the third dataset with journal codenames
   - path: mariozupan/bookkeeping-posting-schemes-2007-2023
     split: train
     type: chat_template
@@ -63,8 +64,8 @@ output_dir: ./outputs-wiley/seed-oss-36b-qlora-default-config/
 sequence_len: 2048 #512 #4096
 sample_packing: false #true
 
-wandb_project: axlotl
-wandb_entity: mariozupansystems-srce
+wandb_project: 
+wandb_entity:
 wandb_watch:
 wandb_name:
 wandb_log_model:
