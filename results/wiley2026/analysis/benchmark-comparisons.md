@@ -77,6 +77,21 @@
 
 ### Demostration of the evaluation of individual samples
 
+In the following simple example the LLM predicts correctly the posting scheme for one of the many various types of input invoices. As it can be seen the LLM provide a transparent input invoice scheme. However lm eval harness evaluation was done in one-shot prompting where the evaluated code rated accounts correctness with 0.75 because the latest account prediction differs from the target, no matter what the balance and the side was correct.
+
+However the threshold for Accounts Correct (balanced AND business logical)' was set to the 0.5:
+
+```
+#################################################
+    threshold = 0.5
+#################################################
+evaluation['balanced_and_accounts'] = 1.0 if (evaluation['balanced'] == 1.0 and evaluation['accounts_score'] >= threshold) else 0.0
+
+```
+
+It is always hard to make decision on heuristic outputs but the decision for different fine-tuning configurations was transparent because the structure of posting schemes on which models have been trained is relying on the accounting information system which was made on mostly generative scheme, connected with the unique codenames where usually 50% of autocompleted i.e. suggested journal accounts are usually changed by the user. 
+
+So this example will be evaluated as 'Accounts correct' 
 ```text
 
 ================================================================================
@@ -143,12 +158,7 @@
 📊 EVALUATION METRICS:
   Parsed: 1.0
   Balanced: 1.0
-  Strict Accounts Correct: 0.0
-  Flexible Accounts Correct: 1.0
-  Strict Accounts Score: 0.7500
-  Flexible Accounts Score: 0.7500
-  Balanced & Strict Correct: 0.0
-  Balanced & Flexible Correct: 0.0
+  Accounts Score: 0.7500
 
 🎯 REQUIRED ACCOUNT SIDES:
   Account class 14: debit only (mask=1)
