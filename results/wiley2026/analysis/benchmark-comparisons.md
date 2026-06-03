@@ -70,9 +70,91 @@
    ❌ Incorrect: 1515 (93.8%)
 ```
 ```
+```
 
 
 
-### Deonstration of the evaluation of individual samples
 
+### Demostration of the evaluation of individual samples
+
+```text
+
+================================================================================
+📋 SAMPLE 2 EVALUATION DETAILS
+================================================================================
+
+📝 TARGET:
+{
+  "year": "2019",
+  "document": "URAEU",
+  "document_explanation": "Document codename for posting various types of input invoices. These can include invoices for different costs, such as electricity, fuel, goods received into stock according to the delivery note, small inventory, and services like telecommunications, banking, and forwarding.",
+  "total_debit": 15350.7,
+  "total_credit": 15350.7,
+  "entries": [
+    {
+      "ACCOUNT": "140000",
+      "TITLE": "PRE**********************************",
+      "DEBIT": 3070.14,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "220",
+      "TITLE": "TER*****************",
+      "DEBIT": 0.0,
+      "CREDIT": 15350.7
+    },
+    {
+      "ACCOUNT": "224",
+      "TITLE": "TER*****************",
+      "DEBIT": 12280.56,
+      "CREDIT": 0.0
+    }
+  ]
+}
+
+🤖 PREDICTION:
+{
+  "year": "2019",
+  "document": "URAEU",
+  "total_debit": 1000.0,
+  "total_credit": 1000.0,
+  "entries": [
+    {
+      "ACCOUNT": "140000",
+      "TITLE": "PRE**********************************",
+      "DEBIT": 200.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "220",
+      "TITLE": "AUT***************************************",
+      "DEBIT": 0.0,
+      "CREDIT": 1000.0
+    },
+    {
+      "ACCOUNT": "4111",
+      "TITLE": "USL*********************************",
+      "DEBIT": 800.0,
+      "CREDIT": 0.0
+    }
+  ]
+}
+
+📊 EVALUATION METRICS:
+  Parsed: 1.0
+  Balanced: 1.0
+  Strict Accounts Correct: 0.0
+  Flexible Accounts Correct: 1.0
+  Strict Accounts Score: 0.7500
+  Flexible Accounts Score: 0.7500
+  Balanced & Strict Correct: 0.0
+  Balanced & Flexible Correct: 0.0
+
+🎯 REQUIRED ACCOUNT SIDES:
+  Account class 14: debit only (mask=1)
+  Account class 22: both sides (mask=3)
+
+```
+```
+```
 
