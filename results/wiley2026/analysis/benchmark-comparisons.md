@@ -20,6 +20,8 @@
 
 #### Seed-OSS-36B 
 
+```text
+```text
 ⚙️  Evaluating samples for model: seed-oss
    Processing samples from .eval-workspace/samples/seed-oss/samples.jsonl
    Processed 1615 samples
@@ -31,9 +33,15 @@
    ⚖️  Balanced: 1599 (99.0%)
    📊 Accounts Score: 73.11%
    ❌ Incorrect: 933 (57.8%)
+```text 
 
+
+
+```
 #### GPT-OSS-20B
 
+```text
+```
 ⚙️  Evaluating samples for model: gpt-oss
    Processing samples from .eval-workspace/samples/gpt-oss/samples.jsonl
    Processed 1615 samples
@@ -45,8 +53,12 @@
    ⚖️  Balanced: 1156 (71.6%)
    📊 Accounts Score: 55.45%
    ❌ Incorrect: 921 (57.0%)
+```text
+```
 
 #### GLM-4-5-Air
+```text
+```
 
 ⚙️  Evaluating samples for model: glm
    Processing samples from .eval-workspace/samples/glm/samples.jsonl
@@ -59,7 +71,8 @@
    ⚖️  Balanced: 1343 (83.2%)
    📊 Accounts Score: 40.57%
    ❌ Incorrect: 1515 (93.8%)
-
+```
+```
 
 
 
