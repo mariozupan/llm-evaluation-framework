@@ -3,7 +3,7 @@
 
 ## Model Comparison Summary
 
-### Based knowledge Performance
+### General benchmark performance
 
 | Model | Method | MMLU | GSM8K | HellaSwag |
 |-------|--------|------|-------|-----------|
@@ -28,10 +28,10 @@
 
 📊 EVALUATION SUMMARY:
    Total samples: 1615
-   ✅ Accounts Correct (balanced AND business logical): 682 (42.2%)
+   ✅ Accounts Correct (balanced AND business logical): 1425 (88.2%)
    ⚖️  Balanced: 1599 (99.0%)
    📊 Accounts Score: 73.11%
-   ❌ Incorrect: 933 (57.8%)
+   ❌ Incorrect: 190 (11.8%)
 ``` 
 
 
@@ -46,10 +46,10 @@
 
 📊 EVALUATION SUMMARY:
    Total samples: 1615
-   ✅ Accounts Correct (balanced AND business logical): 694 (43.0%)
+   ✅ Accounts Correct (balanced AND business logical): 967 (59.9%)
    ⚖️  Balanced: 1156 (71.6%)
    📊 Accounts Score: 55.45%
-   ❌ Incorrect: 921 (57.0%)
+   ❌ Incorrect: 648 (40.1%)
 ```
 
 
@@ -64,10 +64,10 @@
 
 📊 EVALUATION SUMMARY:
    Total samples: 1615
-   ✅ Accounts Correct (balanced AND business logical): 100 (6.2%)
+   ✅ Accounts Correct (balanced AND business logical): 801 (49.6%)
    ⚖️  Balanced: 1343 (83.2%)
    📊 Accounts Score: 40.57%
-   ❌ Incorrect: 1515 (93.8%)
+   ❌ Incorrect: 814 (50.4%)
 ```
 ```
 ```
@@ -75,11 +75,12 @@
 
 
 
-### Demostration of the evaluation of individual samples
+### Demonstration of the evaluation of individual samples
 
-In the following simple example the LLM predicts correctly the posting scheme for one of the many various types of input invoices. As it can be seen the LLM provide a transparent input invoice scheme. However lm eval harness evaluation was done in one-shot prompting where the evaluated code rated accounts correctness with 0.75 because the latest account prediction differs from the target, no matter what the balance and the side was correct.
+In the following simple example, the LLM correctly predicts the posting scheme for one of the many different types of input invoices. As can be seen, the LLM provides a transparent input invoice scheme. However, the LM Evaluation Harness evaluation was done using one-shot prompting, where the evaluation code rated account correctness as 0.75 because the last account prediction differs from the target, even though the balance and the side were correct.
 
-However the threshold for Accounts Correct (balanced AND business logical)' was set to the 0.5:
+However, the threshold for Accounts Correct (balanced AND business logical) was set to 0.5.
+
 
 ```
 #################################################
@@ -88,10 +89,10 @@ However the threshold for Accounts Correct (balanced AND business logical)' was 
 evaluation['balanced_and_accounts'] = 1.0 if (evaluation['balanced'] == 1.0 and evaluation['accounts_score'] >= threshold) else 0.0
 
 ```
+It is always hard to make decisions based on heuristic outputs, but the decision for different fine-tuning configurations was transparent because the structure of the posting schemes on which the models were trained relies on an accounting information system. This system was built mostly on a generative scheme connected with unique codenames, where usually 50% of autocompleted, i.e. suggested, journal accounts are changed by the user.
 
-It is always hard to make decision on heuristic outputs but the decision for different fine-tuning configurations was transparent because the structure of posting schemes on which models have been trained is relying on the accounting information system which was made on mostly generative scheme, connected with the unique codenames where usually 50% of autocompleted i.e. suggested journal accounts are usually changed by the user. 
+So this example, according to the selected threshold, will be evaluated as **Accounts Correct** in the model evaluation summaries above.
 
-So this example will be evaluated as 'Accounts correct' 
 ```text
 
 ================================================================================
