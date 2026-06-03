@@ -8,7 +8,18 @@ model_quantization_config: Mxfp4Config
 model_quantization_config_kwargs:
   dequantize: true
 
+
+plugins:
+  - axolotl.integrations.cut_cross_entropy.CutCrossEntropyPlugin
+  - axolotl.integrations.liger.LigerPlugin
+liger_rope: true
+liger_rms_norm: true
+liger_glu_activation: true
+liger_layer_norm: true
+liger_fused_linear_cross_entropy: true
+
 experimental_skip_move_to_device: true  # prevent OOM by NOT putting model to GPU before sharding
+
 
 datasets:
   # local dataset
@@ -48,9 +59,9 @@ datasets:
 
 dataset_prepared_path: ./outputs/last_run_prepared
 val_set_size: 0.1
-output_dir: ./outputs-wiley/gpt-oss-20b-fft-2epoch/
+output_dir: ./outputs-wiley/gpt-oss-20b-fft-final/
 
-sequence_len: 4096
+sequence_len: 512 
 sample_packing: true
 
 wandb_project: 
@@ -59,13 +70,13 @@ wandb_watch:
 wandb_name:
 wandb_log_model:
 
-gradient_accumulation_steps: 4
+gradient_accumulation_steps: 2
 micro_batch_size: 1
 num_epochs: 2
 
 optimizer: adamw_torch_8bit
-lr_scheduler: cosine #constant_with_warmup
-learning_rate: 3e-6 #1e-5
+lr_scheduler: cosine 
+learning_rate: 2e-5
 
 bf16: true
 tf32: true
@@ -78,14 +89,14 @@ activation_offloading: true
 
 
 #eval loss every 50 steps
-evaluation_strategy: steps
-evals_per_epoch: 30   # fallback
+#evaluation_strategy: steps
+evals_per_epoch: 10   
 
 ##train loss every 10 steps
 logging_steps: 10
 
 #prevent early weight shock.
-warmup_ratio: 0.05 #0.03
+warmup_ratio: 0.03
 
 special_tokens:
 eot_tokens:
@@ -100,11 +111,4 @@ fsdp_config:
   reshard_after_forward: true
 #  cpu_ram_efficient_loading: true
 
-plugins:
-  - axolotl.integrations.cut_cross_entropy.CutCrossEntropyPlugin
-  - axolotl.integrations.liger.LigerPlugin
-liger_rope: true
-liger_rms_norm: true
-liger_glu_activation: true
-liger_layer_norm: true
-liger_fused_linear_cross_entropy: true
+
