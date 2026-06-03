@@ -73,7 +73,6 @@
 
 
 
-##### The evaluation on individual sample
-
+#### Deonstration of the evaluation of individual samples 
 
 
