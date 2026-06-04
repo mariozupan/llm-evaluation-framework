@@ -172,8 +172,10 @@ def _required_list_from_gold(gold_obj: dict, side_zero_tol: float = 1e-6) -> Lis
 
 def _accounts_correct(pred_entries: List[dict], required_list: List[dict], side_zero_tol: float = 1e-6) -> bool:
     """
-    STRICT:
-      For each required class, (pred_mask & req_mask) == req_mask
+    For each required class, at least the required side(s) should be used.
+    When side_mask=1, debit should be used.
+    When side_mask=2, credit should be used.
+    When side_mask=3, at least one side should be used.
     """
     pred_map = _class_side_map_from_entries(pred_entries, side_zero_tol=side_zero_tol)
 
@@ -183,12 +185,69 @@ def _accounts_correct(pred_entries: List[dict], required_list: List[dict], side_
         if not cls or req == 0:
             continue
         pm = int(pred_map.get(cls, 0))
-        if (pm & req) != req:
-            return False
+
+        # The flexible logic:
+        # req==1: must have debit (pm & 1) > 0
+        # req==2: must have credit (pm & 2) > 0
+        # req==3: must have at least one side used (pm != 0)
+        if req == 1 and (pm & 1) == 0:
+            return False  # Debit required but not used
+        if req == 2 and (pm & 2) == 0:
+            return False  # Credit required but not used
+        if req == 3 and pm == 0:
+            return False  # Both sides required but none used (this logic is stricter than the original)
+
     return True
 
 
+def _accounts_score(pred_entries: List[dict], required_list: List[dict], side_zero_tol: float = 1e-6) -> float:
+    """
+    Soft scoring that rewards having at least one required side used.
+    For req=3, gives full score if both sides used, 0.5 if one side used.
+    """
+    req_items = required_list or []
+    if not req_items:
+        return 0.0
+
+    pred_map = _class_side_map_from_entries(pred_entries, side_zero_tol=side_zero_tol)
+
+    total = 0.0
+    n = 0
+    for item in req_items:
+        cls = str(item.get("account_class", "")).strip()
+        req = int(item.get("side_mask", 0))
+        if not cls or req == 0:
+            continue
+
+        pm = int(pred_map.get(cls, 0))
+        req_bits = _bitcount(req)
+        if req_bits == 0:
+            continue
+
+        if req == 3:
+            # If both sides used, full credit (2/2)
+            if pm == 3:
+                overlap = 2
+            # If one side used, half credit (1/2)
+            elif pm != 0:
+                overlap = 1
+            else:
+                overlap = 0
+            total += overlap / req_bits
+        else:
+            overlap = _bitcount(pm & req)
+            total += overlap / req_bits
+            
+        n += 1
+
+    return (total / n) if n else 0.0
+
+
+
+
+
 def _bitcount(x: int) -> int:
+    """Count number of bits set in a 2-bit number"""
     return int(bin(int(x) & 0b11).count("1"))
 
 
@@ -256,10 +315,16 @@ def process_results(doc: dict, results: List[str]) -> Dict[str, float]:
         return {
             "parsed": 0.0,
             "balanced": 0.0,
-            "accounts_correct": 0.0,
-            "accounts_score": 0.0,
-            "balanced_and_score": 0.0,
-            "balanced_and_accounts": 0.0,
+            "accounts_correct_strict": 0.0,
+            "accounts_correct_flexible": 0.0,
+            "accounts_score_strict": 0.0,
+            "accounts_score_flexible": 0.0,
+            "balanced_and_score_strict": 0.0,
+            "balanced_and_score_flexible": 0.0,
+            "balanced_and_accounts_strict": 0.0,
+            "balanced_and_accounts_flexible": 0.0,
+            "correct_strict": 0.0,
+            "correct_flexible": 0.0,
         }
 
     balanced = 1.0 if _balanced_from_entries(pred_entries, tol=1e-2) else 0.0
@@ -269,8 +334,9 @@ def process_results(doc: dict, results: List[str]) -> Dict[str, float]:
     accounts_correct = 1.0 if _accounts_correct(pred_entries, req_list) else 0.0
     accounts_score = float(_accounts_score(pred_entries, req_list))
 
+    threshold = 0.5
     balanced_and_score = float(balanced) * accounts_score
-    balanced_and_accounts = 1.0 if (balanced and accounts_correct) else 0.0
+    balanced_and_accounts = 1.0 if (balanced and accounts_score >= threshold) else 0.0
 
     return {
         "parsed": parsed,

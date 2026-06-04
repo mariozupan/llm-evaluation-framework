@@ -103,6 +103,8 @@ evaluation['balanced_and_accounts'] = 1.0 if (evaluation['balanced'] == 1.0 and 
 ```
 It is always hard to make decisions based on stohastic outputs, but the decision for different fine-tuning configurations was transparent because the structure of the posting schemes on which the models were trained relies on an accounting information system. This system was built mostly on a generative scheme connected with unique codenames, where usually 50% of autocompleted, i.e. suggested, journal accounts are changed by the user.
 
+#### Example 1 
+
 So this example, according to the selected threshold, will be evaluated as **Accounts Correct** in the model evaluation summaries above.
 
 ```text
@@ -181,3 +183,269 @@ So this example, according to the selected threshold, will be evaluated as **Acc
 ```
 ```
 
+
+#### Example 2: Comparison analysis of the model -  evaluation results of the same posting scheme 
+
+
+##### Seed-OSS-36B 
+
+```text
+================================================================================
+📋 SAMPLE 0 EVALUATION DETAILS
+================================================================================
+
+📝 TARGET:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "document_explanation": "Document codename for posting the receipt of retail goods into a warehouse according to the delivery note received from suppliers.",
+  "total_debit": 2787.0,
+  "total_credit": 2787.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "TOF***********",
+      "DEBIT": 0.0,
+      "CREDIT": 1369.75
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 2787.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "664",
+      "TITLE": "UKA*******************************",
+      "DEBIT": 0.0,
+      "CREDIT": 521.13
+    },
+    {
+      "ACCOUNT": "6690",
+      "TITLE": "RAZ********************************",
+      "DEBIT": 0.0,
+      "CREDIT": 896.12
+    }
+  ]
+}
+
+🤖 PREDICTION:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "total_debit": 10080.0,
+  "total_credit": 10080.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "ROF*********",
+      "DEBIT": 0.0,
+      "CREDIT": 6300.0
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 10080.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "664",
+      "TITLE": "UKA*******************************",
+      "DEBIT": 0.0,
+      "CREDIT": 1814.4
+    },
+    {
+      "ACCOUNT": "6690",
+      "TITLE": "RAZ********************************",
+      "DEBIT": 0.0,
+      "CREDIT": 1965.6
+    }
+  ]
+}
+
+📊 EVALUATION METRICS:
+  Parsed: 1.0
+  Balanced: 1.0
+  Accounts Score: 1.0000
+
+🎯 REQUIRED ACCOUNT SIDES:
+  Account class 22: credit only (mask=2)
+  Account class 66: both sides (mask=3) 
+```
+
+```
+
+
+#### GPT-OSS-20B 
+
+```text 
+================================================================================
+📋 SAMPLE 0 EVALUATION DETAILS
+================================================================================
+
+📝 TARGET:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "document_explanation": "Document codename for posting the receipt of retail goods into a warehouse according to the delivery note received from suppliers.",
+  "total_debit": 2787.0,
+  "total_credit": 2787.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "TOF***********",
+      "DEBIT": 0.0,
+      "CREDIT": 1369.75
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 2787.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "664",
+      "TITLE": "UKA*******************************",
+      "DEBIT": 0.0,
+      "CREDIT": 521.13
+    },
+    {
+      "ACCOUNT": "6690",
+      "TITLE": "RAZ********************************",
+      "DEBIT": 0.0,
+      "CREDIT": 896.12
+    }
+  ]
+}
+
+🤖 PREDICTION:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "document_explanation": "Document codename for posting the receipt of retail goods into a warehouse according to the delivery note received from suppliers.",
+  "total_debit": 8485.0,
+  "total_credit": 8485.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "ROF*********",
+      "DEBIT": 0.0,
+      "CREDIT": 5395.0
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 8485.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "664",
+      "TITLE": "UKA*******************************",
+      "DEBIT": 0.0,
+      "CREDIT": 1530.0
+    },
+    {
+      "ACCOUNT": "6690",
+      "TITLE": "RAZ********************************",
+      "DEBIT": 0.0,
+      "CREDIT": 1550.0
+    }
+  ]
+}
+
+📊 EVALUATION METRICS:
+  Parsed: 1.0
+  Balanced: 0.0
+  Accounts Score: 1.0000
+
+🎯 REQUIRED ACCOUNT SIDES:
+  Account class 22: credit only (mask=2)
+  Account class 66: both sides (mask=3)
+
+❌ ERRORS:
+  - Not balanced: debit=8485.0, credit=8475.0 
+
+``` 
+
+#### GLM-4-5-Air 
+
+
+```text 
+================================================================================
+📋 SAMPLE 0 EVALUATION DETAILS
+================================================================================
+
+📝 TARGET:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "document_explanation": "Document codename for posting the receipt of retail goods into a warehouse according to the delivery note received from suppliers.",
+  "total_debit": 2787.0,
+  "total_credit": 2787.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "TOF***********",
+      "DEBIT": 0.0,
+      "CREDIT": 1369.75
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 2787.0,
+      "CREDIT": 0.0
+    },
+    {
+      "ACCOUNT": "664",
+      "TITLE": "UKA*******************************",
+      "DEBIT": 0.0,
+      "CREDIT": 521.13
+    },
+    {
+      "ACCOUNT": "6690",
+      "TITLE": "RAZ********************************",
+      "DEBIT": 0.0,
+      "CREDIT": 896.12
+    }
+  ]
+}
+
+🤖 PREDICTION:
+{
+  "year": "2009",
+  "document": "RETINPUTPKV",
+  "total_debit": 410.0,
+  "total_credit": 410.0,
+  "entries": [
+    {
+      "ACCOUNT": "224",
+      "TITLE": "ROF*********",
+      "DEBIT": 0.0,
+      "CREDIT": 410.0
+    },
+    {
+      "ACCOUNT": "6630",
+      "TITLE": "ROB****************",
+      "DEBIT": 410.0,
+      "CREDIT": 0.0
+    }
+  ]
+}
+
+📊 EVALUATION METRICS:
+  Parsed: 1.0
+  Balanced: 1.0
+  Accounts Score: 0.7500
+
+🎯 REQUIRED ACCOUNT SIDES:
+  Account class 22: credit only (mask=2)
+  Account class 66: both sides (mask=3)
+
+================================================================================ 
+
+```
+
+```
+```
+```
+```
