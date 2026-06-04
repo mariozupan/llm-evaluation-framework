@@ -89,7 +89,7 @@ However, the threshold for Accounts Correct (balanced AND business logical) was 
 evaluation['balanced_and_accounts'] = 1.0 if (evaluation['balanced'] == 1.0 and evaluation['accounts_score'] >= threshold) else 0.0
 
 ```
-It is always hard to make decisions based on heuristic outputs, but the decision for different fine-tuning configurations was transparent because the structure of the posting schemes on which the models were trained relies on an accounting information system. This system was built mostly on a generative scheme connected with unique codenames, where usually 50% of autocompleted, i.e. suggested, journal accounts are changed by the user.
+It is always hard to make decisions based on stohastic outputs, but the decision for different fine-tuning configurations was transparent because the structure of the posting schemes on which the models were trained relies on an accounting information system. This system was built mostly on a generative scheme connected with unique codenames, where usually 50% of autocompleted, i.e. suggested, journal accounts are changed by the user.
 
 So this example, according to the selected threshold, will be evaluated as **Accounts Correct** in the model evaluation summaries above.
 
