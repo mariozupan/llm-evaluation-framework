@@ -1,5 +1,17 @@
 # Benchmark Comparisons Analysis
 
+> *My reaction is that there is an evaluation crisis. I don't really know what metrics to look at right now.*
+> *MMLU was a good and useful for a few years but that's long over.*
+> *SWE-Bench Verified (real, practical, verified problems) I really like and is great but itself too narrow.*
+> *Chatbot Arena received so much focus (partly my fault?) that LLM labs have started to really overfit to it, via a combination of prompt mining (from API requests), private evals bombardment, and, worse, explicit use of rankings as training supervision. I think it's still ~ok and there's a lack of "better", but it feels on decline in signal.*
+> *There's a number of private evals popping up, an ensemble of which might be one promising path forward.*
+> *In absence of great comprehensive evals I tried to turn to vibe checks instead, but I now fear they are misleading and there is too much opportunity for confirmation bias, too low sample size, etc., it's just not great.*
+>
+> *TLDR my reaction is I don't really know how good these models are right now.*
+
+— Andrey Karpathy, [X/Twitter post](https://x.com/karpathy/status/1896266683301659068), 2025
+
+
 
 ## Model Comparison Summary
 
