@@ -185,9 +185,14 @@ MIT
 If you use this code in your research, please cite:
 
 ```
-@article{zupan2026bookkeeping,
-  title={Fine-tuning and Evaluating LLMs on Double-Entry Bookkeeping Posting Schemes},
+@article{zupan2026evalframe,
+  title={An evaluation framework for post-trained bookkeeping language models},
   author={Zupan, Mario},
-  year={2026}
+  journal={Intelligent systems in accounting, finance and management},
+  year={2026},
+  publisher={Wiley Online Library}
+}
+
+
 }
 ```
